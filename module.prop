@@ -1,0 +1,7 @@
+id=rm_thermals
+name=Remove Thermals
+version=v1
+versionCode=1
+author=tytydraco
+description=Removes thermal config files.
+minMagisk=17000

@@ -1,0 +1,34 @@
+#!/system/bin/sh
+# By Tyler Nijmeh <tytydraco@gmail.com>.
+
+# Prefix
+P="[*]"
+E="[!]"
+
+# Start script
+echo "$P Script by Tyler Nijmeh <tytydraco@gmail.com>."
+
+if [ "$EUID" -ne 0 ]; then
+	echo "$E Please run as root."
+	exit 1
+fi
+
+echo "$P Ensuring mount points exist."
+mounts=$(mount)
+if [[ ! $mounts = *"/vendor"* ]];
+then
+	echo "$E vendor mount point was not found."
+	echo "$E Ensure you have a compatible device."
+	exit 1
+fi
+
+echo "$P Mounting vendor as RW."
+mount -o rw,remount /vendor
+
+echo "$P Removing thermal files from /vendor."
+rm -rf /vendor/etc/thermal-engine*.conf
+
+echo "$P Mounting vendor as RO."
+mount -o ro,remount /vendor
+
+echo "$P Done. Please reboot."
